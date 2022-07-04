@@ -1,11 +1,12 @@
 import TokenService from "../api/TokenService";
+import {IAuth} from "../../context/AuthContext";
 
 export default class AuthService {
-    static async login(email, password) {
+    static async login(email: string, password: string) : Promise<IAuth | undefined> {
         const auth = await TokenService.get(email, password);
 
         if (!auth)
-            return false;
+            return undefined;
 
         localStorage.setItem('auth', JSON.stringify(auth));
 
@@ -16,7 +17,7 @@ export default class AuthService {
         localStorage.removeItem('auth');
     }
 
-    static getAuth() {
+    static getAuth() : IAuth | undefined {
         const item = localStorage.getItem('auth')
 
         try {

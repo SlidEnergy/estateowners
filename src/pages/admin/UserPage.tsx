@@ -3,14 +3,17 @@ import {useParams} from "react-router-dom";
 import {useFetching} from "../../hooks/useFetching";
 import {UsersService} from "../../core/api/UsersService";
 import Loader from "../../components/loader/loader";
+import {User} from "../../core/models/User";
 
-const User = () => {
+const UserPage = () => {
     const params = useParams();
-    const [user, setUser] = useState();
+    const [user, setUser] = useState<User>();
     const [fetchUserById, isLoading, error] = useFetching(async () => {
-        const response = await UsersService.getById(params.id);
+        if(params.id) {
+            const response = await UsersService.getById(params.id);
 
-        setUser(response);
+            setUser(response);
+        }
     })
 
     useEffect(() => {
@@ -35,4 +38,4 @@ const User = () => {
     );
 };
 
-export default User;
+export default UserPage;

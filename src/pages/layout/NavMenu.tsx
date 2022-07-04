@@ -1,13 +1,13 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
 import {Link, useNavigate} from 'react-router-dom';
 import './NavMenu.css';
 import AuthService from "../../core/auth/AuthService";
-import {AuthContext} from "../../context/AuthContext";
+import {useAuth} from "../../hooks/useAuth";
 
 const NavMenu = () => {
     const [collapsed, setCollapsed] = useState(true);
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const {isAuth, setAuth} = useAuth();
     const navigate = useNavigate();
 
     function toggleNavbar() {
@@ -16,7 +16,7 @@ const NavMenu = () => {
 
     function logOut() {
         AuthService.logout();
-        setIsAuth(false);
+        setAuth(undefined);
         navigate('/admin/login');
     }
 
@@ -30,12 +30,6 @@ const NavMenu = () => {
                     <ul className="navbar-nav flex-grow">
                         <NavItem>
                             <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink className="text-dark" href="#" onClick={logOut}>Выйти</NavLink>

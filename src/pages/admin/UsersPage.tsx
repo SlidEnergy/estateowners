@@ -3,9 +3,10 @@ import {useFetching} from "../../hooks/useFetching";
 import {UsersService} from "../../core/api/UsersService";
 import Loader from "../../components/loader/loader";
 import {Link} from "react-router-dom";
+import {User} from "../../core/models/User";
 
-const Users = () => {
-    const [users, setUsers] = useState();
+const UsersPage = () => {
+    const [users, setUsers] = useState<User[]>();
 
     const [fetchUsers, isLoading, error] = useFetching(async () => {
         const list = await UsersService.getList();
@@ -37,4 +38,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default UsersPage;

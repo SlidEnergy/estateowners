@@ -1,4 +1,3 @@
-import React from 'react';
 import AppRoutes from './routing/AppRoutes';
 import Layout from './pages/layout/Layout';
 import './custom.css';

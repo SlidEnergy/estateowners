@@ -1,18 +1,18 @@
-import {useEffect, useState} from 'react';
+import {FC, PropsWithChildren, useEffect, useState} from 'react';
 import AuthService from "./AuthService";
-import {AuthContext} from "../../context/AuthContext";
+import {AuthContext, IAuth} from "../../context/AuthContext";
 import Loader from "../../components/loader/loader";
 
-const AuthProvider = ({children}) => {
-    const [isAuth, setIsAuth] = useState(undefined);
-    const [auth, setAuth] = useState(undefined);
+const AuthProvider: FC<PropsWithChildren> = ({children}) => {
+    const [isAuth, setIsAuth] = useState<boolean | undefined>(undefined);
+    const [auth, setAuth] = useState<IAuth | undefined>(undefined);
 
     useEffect(() => {
         const auth = AuthService.getAuth();
         setIsAuthAndAuth(auth);
     }, []);
 
-    function setIsAuthAndAuth(auth) {
+    function setIsAuthAndAuth(auth: IAuth | undefined) {
         const value = !!(auth && auth.token);
         setIsAuth(value);
 
@@ -21,7 +21,7 @@ const AuthProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{isAuth, auth, setAuth: setIsAuthAndAuth}}>
+        <AuthContext.Provider value={{isAuth: isAuth ?? false, auth, setAuth: setIsAuthAndAuth}}>
             {isAuth === undefined
                 ? <Loader/>
                 : <div>{children}</div>

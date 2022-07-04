@@ -1,21 +1,22 @@
-import React, {useState} from 'react';
+import React, {MouseEvent, MouseEventHandler, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import AuthService from "../../core/auth/AuthService";
 import Loader from "../../components/loader/loader";
 import {useFetching} from "../../hooks/useFetching";
 import {useAuth} from "../../hooks/useAuth";
+import {IAuth} from "../../context/AuthContext";
 
 const AdminLogin = () => {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [logInFetching, isLoading, error] = useFetching(async () => {
+    const [login, setLogin] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [logInFetching, isLoading, error] = useFetching<Promise<IAuth | undefined>>(async () => {
         return await AuthService.login(login, password);
     });
     const {setAuth} = useAuth();
 
     const navigate = useNavigate();
 
-    async function logIn(e) {
+    async function logIn(e : MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
 
         const result = await logInFetching();
