@@ -1,9 +1,22 @@
 import TokenService from "../api/TokenService";
 import {IAuth} from "../../context/AuthContext";
+import {TelegramUser} from "telegram-login-button";
+import TelegramService from "../api/TelegramService";
 
 export default class AuthService {
-    static async login(email: string, password: string) : Promise<IAuth | undefined> {
+    static async loginByPassword(email: string, password: string) : Promise<IAuth | undefined> {
         const auth = await TokenService.get(email, password);
+
+        if (!auth)
+            return undefined;
+
+        localStorage.setItem('auth', JSON.stringify(auth));
+
+        return auth;
+    }
+
+    static async loginByTelegram(user: TelegramUser) : Promise<IAuth | undefined> {
+        const auth = await TelegramService.login(user);
 
         if (!auth)
             return undefined;

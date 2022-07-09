@@ -10,7 +10,7 @@ const AdminLogin = () => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [logInFetching, isLoading, error] = useFetching<Promise<IAuth | undefined>>(async () => {
-        return await AuthService.login(login, password);
+        return await AuthService.loginByPassword(login, password);
     });
     const {setAuth} = useAuth();
 
