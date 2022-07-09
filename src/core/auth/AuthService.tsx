@@ -1,7 +1,7 @@
 import TokenService from "../api/TokenService";
 import {IAuth} from "../../context/AuthContext";
-import {TelegramUser} from "telegram-login-button";
 import TelegramService from "../api/TelegramService";
+import {TelegramUser} from "../../components/TelegramLoginButton";
 
 export default class AuthService {
     static async loginByPassword(email: string, password: string) : Promise<IAuth | undefined> {
