@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import Loader from "../components/loader/loader";
 
 const Login = () => {
-    const botName = "EstateOwnersBot";
+    const botName = "izumrudgorod_bot";
     const [logInFetching, isLoading, error] = useFetching<Promise<IAuth | undefined>>(async (user) => {
         return await AuthService.loginByTelegram(user);
     });
@@ -31,7 +31,7 @@ const Login = () => {
 
     return (
         <div>
-            <TelegramLoginButton botName="SlidTestBot" dataOnauth={OnAuth}></TelegramLoginButton>
+            <TelegramLoginButton botName={botName} dataOnauth={OnAuth}></TelegramLoginButton>
             {isLoading &&
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}><Loader></Loader></div>
             }
