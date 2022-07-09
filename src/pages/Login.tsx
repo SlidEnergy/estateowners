@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import TelegramLoginButton, { TelegramUser } from 'telegram-login-button';
 import {useFetching} from "../hooks/useFetching";
 import {IAuth} from "../context/AuthContext";
 import AuthService from "../core/auth/AuthService";
 import {useAuth} from "../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
 import Loader from "../components/loader/loader";
+import TelegramLoginButton, {TelegramUser} from "../components/TelegramLoginButton";
 
 const Login = () => {
     const botName = "izumrudgorod_bot";
