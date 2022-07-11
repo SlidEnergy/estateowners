@@ -13,7 +13,7 @@ const UsersPage = () => {
         setUsers(list);
     })
 
-    useEffect( () => {
+    useEffect(() => {
         fetchUsers();
     }, []);
 
@@ -29,11 +29,15 @@ const UsersPage = () => {
                 </div>
             }
 
-            {users && users.map((user, index) =>
-                <div key={user.id}>
-                    {user.email}&nbsp;<Link to={'/admin/users/' + user.id}>Перейти</Link>
-                </div>
-            )}
+            {users &&
+                <>
+                    <div>Всего {users.length} пользователей.</div>
+                    {users.map((user, index) =>
+                        <div key={user.id}>
+                            {user.lastName} {user.firstName} {user.middleName} {user.isAdmin ? "admin" : ""} {user.email} <Link to={'/admin/users/' + user.id}>Перейти</Link>
+                        </div>)}
+                </>
+            }
         </div>
     );
 };
