@@ -53,7 +53,7 @@ const UserPage = () => {
             }
             <h3>Список помещений (Всего {estates?.length || ''})</h3>
             {estates &&
-                <EstateList estates={estates} isLoading={isUserLoading} error={UserError}></EstateList>
+                <EstateList estates={estates} isLoading={isUserLoading} error={UserError} linkPath='/admin/estates'></EstateList>
             }
         </div>
     );

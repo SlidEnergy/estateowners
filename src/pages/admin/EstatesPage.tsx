@@ -19,7 +19,7 @@ const EstatesPage = () => {
     return (
         <div>
             <h3>Список помещений (Всего {estates?.length || ''})</h3>
-            <EstateList estates={estates} isLoading={isLoading} error={error}></EstateList>
+            <EstateList estates={estates} isLoading={isLoading} error={error} linkPath='/admin/estates'></EstateList>
         </div>
     );
 };

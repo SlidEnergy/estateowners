@@ -20,7 +20,7 @@ const ProfilePage = () => {
         <div>
             <h3>Список помещений</h3>
             {estates &&
-                <EstateList estates={estates} isLoading={isLoading} error={error}></EstateList>
+                <EstateList estates={estates} isLoading={isLoading} error={error} linkPath='/estates'></EstateList>
             }
         </div>
     );

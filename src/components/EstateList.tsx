@@ -7,6 +7,7 @@ type Props = {
     estates: Estate[] | undefined;
     isLoading: boolean;
     error: string;
+    linkPath: string;
 }
 
 const EstateList = (props: Props) => {
@@ -26,7 +27,7 @@ const EstateList = (props: Props) => {
                 props.estates.map((estate, index) =>
                     <div key={estate.id}>
                         {estate.id} {estate.building} {estate.type} {estate.number} {estate.area} <Link
-                        to={'/estates/' + estate.id}>Перейти</Link>
+                        to={props.linkPath + '/' + estate.id}>Перейти</Link>
                     </div>)
             }
         </div>
