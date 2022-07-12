@@ -3,7 +3,7 @@ import {useFetching} from "../../hooks/useFetching";
 import {UsersService} from "../../core/api/UsersService";
 import Loader from "../../components/loader/loader";
 import {Link} from "react-router-dom";
-import {User} from "../../core/models/User";
+import {User} from "../../core/api/EstateOwnersApi";
 
 const UsersPage = () => {
     const [users, setUsers] = useState<User[]>();
@@ -19,6 +19,7 @@ const UsersPage = () => {
 
     return (
         <div>
+            <h3>Список пользователей (Всего {users?.length || ''})</h3>
             {isLoading &&
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}><Loader></Loader></div>
             }
@@ -30,13 +31,11 @@ const UsersPage = () => {
             }
 
             {users &&
-                <>
-                    <div>Всего {users.length} пользователей.</div>
-                    {users.map((user, index) =>
-                        <div key={user.id}>
-                            {user.lastName} {user.firstName} {user.middleName} {user.isAdmin ? "admin" : ""} {user.email} <Link to={'/admin/users/' + user.id}>Перейти</Link>
-                        </div>)}
-                </>
+                users.map((user, index) =>
+                    <div key={user.id}>
+                        {user.lastName} {user.firstName} {user.middleName} {user.isAdmin ? "admin" : ""} {user.email}
+                        <Link style={{marginLeft: 10}} to={'/admin/users/' + user.id}>Перейти</Link>
+                    </div>)
             }
         </div>
     );
