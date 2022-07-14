@@ -1,5 +1,6 @@
 import AuthService from "../auth/AuthService";
 import {http} from "../http-common";
+import {Estate, EstateBindingModel} from "./EstateOwnersApi";
 
 export class EstatesService {
     static async getList() {
@@ -22,13 +23,23 @@ export class EstatesService {
         return response.data;
     }
 
-    static async getById(id: number) {
+    static async getById(id: number) : Promise<Estate | undefined> {
         const auth = AuthService.getAuth();
 
         if(!auth)
             return;
 
         const response = await http.get('/estates/' + id, {headers: { 'Authorization': 'Bearer ' + auth.token}});
+        return response.data;
+    }
+
+    static async add(estate: EstateBindingModel, userId: string | undefined = undefined): Promise<Estate | undefined> {
+        const auth = AuthService.getAuth();
+
+        if(!auth)
+            return;
+
+        const response = await http.put('/estates' + (userId ? '?userId=' + userId : ''), estate,{headers: { 'Authorization': 'Bearer ' + auth.token}});
         return response.data;
     }
 }

@@ -268,6 +268,83 @@ export class EstatesClient {
     }
 
     /**
+     * @param userId (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    add(userId: string | undefined, body: EstateBindingModel | undefined , cancelToken?: CancelToken | undefined): Promise<Estate> {
+        let url_ = this.baseUrl + "/api/v1/Estates?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processAdd(_response);
+        });
+    }
+
+    protected processAdd(response: AxiosResponse): Promise<Estate> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = Estate.fromJS(resultData200);
+            return Promise.resolve<Estate>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            return throwException("\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441.", status, _responseText, _headers);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            return throwException("\u041d\u0435\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043d\u0430\u044f \u043e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430.", status, _responseText, _headers);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438", status, _responseText, _headers);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            return throwException("\u0414\u043e\u0441\u0442\u0443\u043f \u0437\u0430\u043f\u0440\u0435\u0449\u0435\u043d", status, _responseText, _headers);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<Estate>(null as any);
+    }
+
+    /**
      * @return Success
      */
     getById(id: number , cancelToken?: CancelToken | undefined): Promise<Estate> {
@@ -1400,6 +1477,54 @@ export interface IEstate {
     number?: string | undefined;
     buildingId?: number;
     building?: string | undefined;
+    area?: number;
+}
+
+export class EstateBindingModel implements IEstateBindingModel {
+    type?: EstateType;
+    number?: string | undefined;
+    buildingId?: number;
+    area?: number;
+
+    constructor(data?: IEstateBindingModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.number = _data["number"];
+            this.buildingId = _data["buildingId"];
+            this.area = _data["area"];
+        }
+    }
+
+    static fromJS(data: any): EstateBindingModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new EstateBindingModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["number"] = this.number;
+        data["buildingId"] = this.buildingId;
+        data["area"] = this.area;
+        return data;
+    }
+}
+
+export interface IEstateBindingModel {
+    type?: EstateType;
+    number?: string | undefined;
+    buildingId?: number;
     area?: number;
 }
 
